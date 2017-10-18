@@ -1,0 +1,45 @@
+name:                nico-thru-line-festival
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/snisimu/nico-thru-line-festival#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Shunji Nishimura
+maintainer:          snisimu@gmail.com
+copyright:           2017 Shunji Nishimura
+category:            Web
+build-type:          Simple
+cabal-version:       >=1.10
+extra-source-files:  README.md
+
+executable nico-thru-line-festival
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  other-modules:       Core, App, Search, Answers, InitUsers, ExerciseList, MyLib, MyLib.Coursework
+  build-depends:       base >= 4.7 && < 5
+                     , process
+                     , filepath
+                     , directory
+                     , text
+                     , random
+                     , bytestring
+                     , base16-bytestring
+                     , utf8-string
+                     , aeson
+                     , time
+                     , parsec
+                     , network
+                     , http-conduit
+                     , HTTP
+                     , http-types
+                     , wai
+                     , warp
+                     , wai-route
+                     , smtps-gmail
+                     , mime-mail
+                     , hxt
+                     , line
+                     , containers
+                     , MissingH
