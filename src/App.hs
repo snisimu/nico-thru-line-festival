@@ -54,47 +54,7 @@ handleText mv event text = do
     uid = getUID event
     hChar = T.head text
   addUser mv uid
-  if hChar == '*' || hChar == '＊'
-  then storeComment mv (T.tail text)
-  else case parse parserExercise "" (T.unpack text) of
-    Right (n,m) -> case findExercise (n,m) of
-      Just exer   -> pushButtons mv (n,m) exer uid
-      Nothing     -> cont uid
-    Left _      -> cont uid
-  where
-    cont uid = case isAsking text of
-      Just term -> search uid term
-      Nothing   -> if isHelp text
-        then help event
-        else do
-          timeQ <- readMVar $ mvTime mv
-          time <- getPOSIXTime
-          when (timeQ + fromInteger 60 < time) $ react event -- when Q-time no react
-    isAsking text =
-      let
-        tailMatch :: T.Text -> Maybe T.Text
-        tailMatch term =
-          let
-            n = T.length text
-            m = T.length term
-          in if m < n && T.reverse (T.take m $ T.reverse text) == term
-            then Just $ T.take (n-m) text
-            else Nothing
-      in  case msum $ map tailMatch ["とは", "とは？"] of
-            Just term -> Just term
-            Nothing   -> if T.last text == '？' || T.last text == '?'
-              then Just $ T.init text
-              else Nothing
-    parserExercise = do
-      char 'Q'
-      n <- manyTill anyChar (char '-')
-      m <- many1 anyChar
-      return (n,m)
-    findExercise (n,m) = case lookup n exerciseList of
-      Nothing    -> Nothing
-      Just exerL -> case lookup m exerL of
-        Nothing   -> Nothing
-        Just exer -> Just exer
+  storeComment mv text
 
 isHelp text =
   (map toLower (T.unpack text) == "help")
